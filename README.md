@@ -1,17 +1,35 @@
-# TP_ENSAI
+#  Web Indexing Project - ENSAI 2026
 
-## TP1 
+Ce dépôt contient les travaux réalisés dans le cadre du cours d'**Indexation Web**. [L'objectif est de concevoir un moteur de recherche complet, de la collecte des données à la structuration de l'information.
 
-Pour le TP1, voici un exemple de fichiers à rendre. Le contenu peut différer, mais le format doit être respecté.
+## Structure du TP2 : Création des Index
 
-## TP2
+Ce deuxième volet porte sur la transformation des documents bruts collectés (`products.jsonl`) en structures de données optimisées pour la recherche rapide.
 
-Pour le TP2, le fichier d'input correspond à la sortie du crawler fait en TP1. 
-En output, vous trouverez les 5 index demandés. Attention, il est demandé en TP2 d'ajouter d'autres index et d'expliquer vos choix. 
+### 1. Organisation des Index
+Le script génère plusieurs fichiers d'index dans le dossier `WORK_TP2/output/` pour répondre aux besoins spécifiques du moteur de recherche :
 
-## TP3
+* **Index Inversés Standards** (`index_title.json`, `index_description.json`) : Associent chaque terme nettoyé à la liste des URLs des documents.
+* **Index de Position** (`index_positional_title.json`) : Pour le champ titre, cet index stocke l'URL et les positions exactes de chaque mot pour permettre les recherches par expressions exactes.
+* **Index des Reviews** (`index_reviews.json`) : Index non-inversé stockant le nombre total de reviews, la note moyenne et la dernière note pour l'ordonnancement.
+* **Index des Features** (`index_brand.json`, `index_origin.json`) : Index inversés basés sur les attributs `brand` (marque) et `origin` (mappé sur `made in`) pour le filtrage par facettes.
 
-Pour le TP3, le fichier en sortie du crawler a été modifé pour contenir des informations supplémentaires. Vous pouvez le trouver dans `TP3/rearranged_products.jsonl`. Cependant, pour le TP3, vous n'en avez pas besoin. 
-Vous pouvez utiliser en input les fichiers dans `TP3/input`, où vous trouverez les index créés à partir du TP2 avec le fichier `rearranged_products.jsonl`, ainsi qu'un fichier contenant quelques synonymes d'origines. 
 
+### 2. Choix d'implémentation
+* **Prétraitement du texte (NLP)** : 
+    * **Tokenisation & Nettoyage** : Découpage par espaces et suppression de la ponctuation via expressions régulières.
+    * **Stopwords (NLTK)** : Suppression des mots outils anglais basée sur la **Loi de Zipf** pour réduire le bruit.
+    * **Stemming (NLTK PorterStemmer)** : Racinisation pour regrouper les mots de même famille morphologique.
+* **Gestion des données réelles** : Le code cible dynamiquement les champs `product_features` et `product_reviews` identifiés dans les données JSONL.
+* **Gestion des chemins** : Utilisation de `os.path` pour garantir la portabilité du code et automatiser la création des dossiers de sortie.
 
+## 🛠️ Installation et Utilisation
+
+### Prérequis
+* Python 3.x
+* Un fichier `products.jsonl` valide situé à la racine du projet.
+
+### Installation des dépendances
+Avant de lancer le script, installez les bibliothèques nécessaires (notamment `nltk`) :
+```bash
+pip install -r requirements.txt
