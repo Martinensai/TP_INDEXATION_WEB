@@ -23,7 +23,7 @@ Le script génère plusieurs fichiers d'index dans le dossier `WORK_TP2/output/`
 * **Gestion des données réelles** : Le code cible dynamiquement les champs `product_features` et `product_reviews` identifiés dans les données JSONL.
 * **Gestion des chemins** : Utilisation de `os.path` pour garantir la portabilité du code et automatiser la création des dossiers de sortie.
 
-## 🛠️ Installation et Utilisation
+## Installation et Utilisation
 
 ### Prérequis
 * Python 3.x
