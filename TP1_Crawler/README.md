@@ -1,4 +1,4 @@
-# 🕸️ Web Crawler Project - ENSAI 2026 (TP1)
+# Web Crawler Project - ENSAI 2026 (TP1)
 
 Ce projet consiste en la création d'un crawler web "poli" et optimisé en Python. L'objectif est d'explorer un site e-commerce, d'extraire des données structurées et de prioriser les pages produits.
 

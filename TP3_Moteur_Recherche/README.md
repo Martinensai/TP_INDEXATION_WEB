@@ -1,4 +1,4 @@
-# 🔍 Search Engine Project - ENSAI 2026 (TP3)
+#  Search Engine Project - ENSAI 2026 (TP3)
 
 Ce volet final consiste en la création d'un moteur de recherche performant utilisant les index inversés générés précédemment. Il intègre des algorithmes de classement (Ranking) basés sur la pertinence textuelle et des signaux métiers.
 
@@ -37,7 +37,7 @@ Conformément aux critères d'évaluation, voici les justifications de nos choix
 * **Utilisation des Positions** : L'implémentation du "Match Exact" permet de distinguer les concepts complexes (ex: "Dark Chocolate") des simples cooccurrences de mots isolés dans le document.
 * **Signaux non-textuels** : L'intégration des avis clients (`mean_mark`) permet de départager des documents à pertinence textuelle égale en mettant en avant les produits "Top Rated", améliorant ainsi l'expérience utilisateur finale.
 
-## 🚀 Utilisation
+##  Utilisation
 
 ### Installation
 Assurez-vous d'avoir installé les dépendances via le fichier `requirements.txt` à la racine :
