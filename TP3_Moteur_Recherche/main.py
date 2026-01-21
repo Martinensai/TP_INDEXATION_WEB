@@ -2,47 +2,52 @@ import json
 import os
 from search_engine import SearchEngine
 
+def print_banner():
+    """Affiche un en-tête professionnel pour le moteur de recherche."""
+    CYAN = "\033[96m"
+    BOLD = "\033[1m"
+    END = "\033[0m"
+    print(f"\n{CYAN}{BOLD}" + "═"*65)
+    print("        🚀 ENSAI SEARCH ENGINE | SYSTÈME D'INDEXATION v3.0      ".center(65))
+    print("═"*65 + f"{END}")
+
 def run_tp3():
     # --- INITIALISATION ---
     base_dir = os.path.dirname(os.path.abspath(__file__))
     engine = SearchEngine(input_folder="input")
     
-    # Couleurs et style pour la console
-    BLUE = "\033[94m"
-    GREEN = "\033[92m"
-    YELLOW = "\033[93m"
-    BOLD = "\033[1m"
-    END = "\033[0m"
+    # Palette de couleurs ANSI pour un rendu moderne
+    BLUE, GREEN, YELLOW, CYAN = "\033[94m", "\033[92m", "\033[93m", "\033[96m"
+    BOLD, UNDERLINE, END = "\033[1m", "\033[4m", "\033[0m"
 
-    print(f"\n{BLUE}{BOLD}==================================================={END}")
-    print(f"{BLUE}{BOLD}       ENSAI SEARCH ENGINE - EDITION 2026          {END}")
-    print(f"{BLUE}{BOLD}==================================================={END}\n")
+    print_banner()
 
-    # --- INTERACTION UTILISATEUR ---
-    user_query = input(f"{BOLD}🔍 Entrez votre recherche (ou tapez Entrée pour le query par défaut) : {END}").strip()
+    # --- ZONE DE SAISIE ÉLÉGANTE ---
+    # cadre visuel pour inviter l'utilisateur à taper
+    print(f"\n{BOLD}┌" + "─"*63 + "┐")
+    user_query = input(f"│  🔍 Tapez les mots-clés à rechercher : ").strip()
+    print("└" + "─"*63 + "┘" + f"{END}")
     
-    # Gestion de la valeur par défaut
+    # Définition de la requête (valeur par défaut si vide)
+    query = user_query if user_query else "Box of Chocolate"
     if not user_query:
-        query = "Box of Chocolate"
-        print(f"{YELLOW}💡 Aucune saisie détectée. Utilisation du terme par défaut : '{query}'{END}")
-    else:
-        query = user_query
+        print(f"{YELLOW}   ℹ️  Entrée vide. Utilisation du terme par défaut : '{query}'{END}")
 
-    # --- CHARGEMENT DES DONNÉES ---
-    products_file = os.path.join(base_dir, "rearranged_products.jsonl")
+    # --- CHARGEMENT DES DONNÉES SOURCES ---
     product_data = {}
+    jsonl_path = os.path.join(base_dir, "rearranged_products.jsonl")
     
-    if not os.path.exists(products_file):
-        print(f"❌ Erreur : Le fichier {products_file} est introuvable.")
+    if not os.path.exists(jsonl_path):
+        print(f"❌ Erreur : {jsonl_path} introuvable.")
         return
 
-    with open(products_file, "r", encoding="utf-8") as f:
+    with open(jsonl_path, "r", encoding="utf-8") as f:
         for line in f:
             p = json.loads(line)
             product_data[p["url"]] = p
 
-    # --- RECHERCHE ET RANKING ---
-    print(f"\n📡 Analyse des index en cours pour : {BOLD}'{query}'{END}...")
+    # --- MOTEUR DE RECHERCHE ---
+    print(f"\n{BLUE}📡 Analyse des index inversés et calcul du BM25...{END}")
     raw_results = engine.search(query)
 
     # --- FORMATAGE DU LIVRABLE JSON ---
@@ -55,41 +60,42 @@ def run_tp3():
         "results": []
     }
 
-    for res in raw_results[:20]: # Top 20
-        url = res["url"]
-        info = product_data.get(url, {})
+    # --- AFFICHAGE DES RÉSULTATS (TOP 5 VISUEL) ---
+    print(f"\n{GREEN}{BOLD}{UNDERLINE}CLASSEMENT DES RÉSULTATS PAR PERTINENCE{END}")
+    
+    if not raw_results:
+        print(f"\n{YELLOW}   ⚠️ Aucun résultat trouvé pour cette requête.{END}")
+    
+    for i, res in enumerate(raw_results[:20]):
+        info = product_data.get(res["url"], {})
+        
+        # Remplissage de la structure pour le fichier de sortie (Top 20)
         output["results"].append({
             "title": info.get("title"),
-            "url": url,
+            "url": res["url"],
             "description": info.get("description"),
             "ranking_score": res["score"]
         })
 
-    # --- SAUVEGARDE ---
+        # Affichage détaillé pour les 5 premiers dans le terminal
+        if i < 5:
+            print(f"\n{BOLD}{GREEN}{i+1}. {info.get('title')}{END}")
+            print(f"   📊 Score de Ranking : {YELLOW}{res['score']}{END}")
+            print(f"   🔗 URL : {BLUE}{UNDERLINE}{res['url']}{END}")
+            # Aperçu du contenu
+            desc = info.get('description', '')[:130] + "..." if info.get('description') else "Pas de description."
+            print(f"   📝 {desc}")
+
+    # --- SAUVEGARDE ET CLÔTURE ---
     output_path = os.path.join(base_dir, "search_results.json")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=4, ensure_ascii=False)
-
-    # --- RÉCAPITULATIF ÉLÉGANT ---
-    print(f"\n{GREEN}{BOLD}✅ RECHERCHE TERMINÉE AVEC SUCCÈS{END}")
-    print(f"---------------------------------------------------")
-    print(f"📊 {BOLD}Statistiques :{END}")
-    print(f"   - Documents totaux indexés : {len(product_data)}")
-    print(f"   - Documents pertinents trouvés : {len(raw_results)}")
     
-    if raw_results:
-        best_url = raw_results[0]['url']
-        best_title = product_data.get(best_url, {}).get('title', 'N/A')
-        print(f"🏆 {BOLD}Meilleur résultat :{END}")
-        print(f"   - Titre : {GREEN}{best_title}{END}")
-        print(f"   - Score : {YELLOW}{raw_results[0]['score']}{END}")
-        print(f"   - URL   : {best_url}")
-    else:
-        print(f"⚠️ {YELLOW}Aucun document ne correspond à votre requête.{END}")
-
-    print(f"\n📂 {BOLD}Sauvegarde :{END}")
-    print(f"   - Les résultats sont enregistrés dans : {output_path}")
-    print(f"---------------------------------------------------\n")
+    print(f"\n" + "═"*65)
+    print(f"{GREEN}✅ PROCESSUS TERMINÉ{END}")
+    print(f"💾 Résultats exportés : {BOLD}{output_path}{END}")
+    print(f"🎯 Total correspondances : {BOLD}{len(raw_results)}{END}")
+    print("═"*65 + "\n")
 
 if __name__ == "__main__":
     run_tp3()

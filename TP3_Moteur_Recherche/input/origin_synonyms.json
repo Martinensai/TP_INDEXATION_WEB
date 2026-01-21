@@ -1,25 +1,16 @@
 {
-	"usa": [
-		"united states",
-		"united states of america",
-		"america"
-	],
-	"france": [
-		"fr"
-	],
-	"spain": [
-		"spanish"
-	],
-	"germany": [
-		"deutschland"
-	],
-	"south korea": [
-		"korea"
-	],
-	"switzerland": [
-		"swiss"
-	],
-	"netherlands": [
-		"dutch"
-	]
+    "usa": ["united states", "america", "us", "american", "made in usa"],
+    "france": ["fr", "french", "français", "made in france"],
+    "switzerland": ["swiss", "suisse", "ch", "chocolatier"],
+    "spain": ["spanish", "espana", "espagne"],
+    "germany": ["deutschland", "german", "allemagne"],
+    "south korea": ["korea", "republic of korea", "korean", "corée"],
+    "brazil": ["brasil", "brazilian", "brésil"],
+    "italy": ["italian", "italia", "italie"],
+    "netherlands": ["dutch", "holland", "pays-bas"],
+    "clothes": ["apparel", "clothing", "wear", "shirt", "sneakers", "fabric"],
+    "food": ["consumables", "snack", "chocolate", "candy", "delicious", "flavor"],
+    "fruit": ["orange", "cherry", "berry", "zesty"],
+    "premium": ["luxury", "high quality", "best", "top", "elegant"],
+    "cheap": ["affordable", "budget", "pricey", "value"]
 }
