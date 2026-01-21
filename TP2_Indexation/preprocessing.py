@@ -9,22 +9,22 @@ nltk.download('stopwords')
 def clean_text(text):
     """
     Tokenization, passage en minuscule, retrait ponctuation, 
-    suppression des stopwords NLTK et stemming[cite: 277, 278, 279].
+    suppression des stopwords NLTK et stemming.
     """
     if not text: 
         return []
     
-    # 1. Passage en minuscules et retrait de la ponctuation via regex [cite: 277]
+    # 1. Passage en minuscules et retrait de la ponctuation via regex 
     text = re.sub(r'[^\w\s]', '', str(text).lower())
     
     # 2. Tokenization par espace
     tokens = text.split()
     
-    # 3. Suppression des stopwords via la liste officielle NLTK (Anglais) [cite: 278, 614]
+    # 3. Suppression des stopwords via la liste officielle NLTK (Anglais) 
     stop_words = set(stopwords.words('english'))
     tokens = [t for t in tokens if t not in stop_words]
     
-    # 4. Stemming (Racinisation) pour regrouper les mots de même famille [cite: 279, 645]
+    # 4. Stemming (Racinisation) pour regrouper les mots de même famille 
     stemmer = PorterStemmer()
     stemmed_tokens = [stemmer.stem(t) for t in tokens]
     

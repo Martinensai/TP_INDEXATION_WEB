@@ -10,7 +10,6 @@ def make_http_request(url):
         headers = {"User-Agent": "ENSAI-Crawler-2026"}
         req = urllib.request.Request(url, headers=headers)
         with urllib.request.urlopen(req, timeout=10) as response:
-            # OPTIMISATION : Vérifier si c'est bien du HTML avant de lire
             content_type = response.info().get_content_type()
             if 'text/html' not in content_type:
                 print(f"Format non supporté ({content_type}) pour {url}")

@@ -16,7 +16,7 @@ def main():
             if line.strip():
                 docs.append(json.loads(line))
 
-    # Génération des index avec les clés de VOTRE fichier
+    # Génération des index avec les clés
     results = {
         "index_title.json": build_inverted_index(docs, "title"),
         "index_description.json": build_inverted_index(docs, "description"),

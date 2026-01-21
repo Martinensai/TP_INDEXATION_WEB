@@ -33,7 +33,7 @@ def build_features_index(documents, feature_key):
     index = defaultdict(list)
     for doc in documents:
         url = doc.get("url") 
-        # Dans votre fichier, la clé est 'product_features'
+        # La clé est 'product_features'
         features = doc.get("product_features", {})
         
         feature_value = features.get(feature_key)

@@ -2,7 +2,7 @@
 
 Ce projet consiste en la création d'un crawler web "poli" et optimisé en Python. L'objectif est d'explorer un site e-commerce, d'extraire des données structurées et de prioriser les pages produits.
 
-## 📂 Structure du projet
+##  Structure du projet
 
 Le code est divisé en plusieurs modules pour respecter le principe de responsabilité unique :
 
